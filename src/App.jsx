@@ -37,6 +37,20 @@ export default function App() {
   const controlsRef = useRef(null);
   const lastScanRef = useRef({ value: '', time: 0 });
 
+  const successSoundRef = useRef(null);
+
+  useEffect(() => {
+      successSoundRef.current = new Audio("/sounds/scan-success.mp3");
+      successSoundRef.current.volume = 0.7;
+
+      return () => {
+          if (successSoundRef.current) {
+              successSoundRef.current.pause();
+              successSoundRef.current = null;
+          }
+      };
+  }, []);
+
 
   useEffect(() => {
       const canvas = barcodeCanvas.current;
@@ -89,6 +103,18 @@ export default function App() {
     notify.timer = window.setTimeout(() => setMessage(null), 3200);
   };
 
+    const playSuccessSound = () => {
+      const audio = successSoundRef.current;
+
+      if (!audio) return;
+
+      audio.currentTime = 0;
+
+      audio.play().catch(error => {
+          console.warn('Không thể phát âm thanh:', error);
+      });
+  };
+
   const copyCode = async (code) => {
     try {
       await navigator.clipboard.writeText(code);
@@ -112,6 +138,8 @@ export default function App() {
     if (isDuplicate) {
       notify('warning', `Mã "${value}" đã tồn tại, không thể thêm lần nữa.`);
       setScanInput('');
+      // Phát âm thanh khi thêm mã thất bại
+      playSuccessSound();
       return false;
     }
 
@@ -128,6 +156,9 @@ export default function App() {
     updateItems(updatedItems);
 
     setScanInput('');
+
+    // Phát âm thanh khi thêm mã thành công
+    playSuccessSound();
 
     notify('success', `Đã thêm mã ${value} vào danh sách.`);
 
