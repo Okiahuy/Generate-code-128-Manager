@@ -396,7 +396,7 @@ export default function App() {
       </main>
 
       <footer className="footer">
-        <div className="footer-inner"><div className="footer-brand"><Barcode size={19}/>Tạo Code128 </div><span>© {new Date().getFullYear()} Code128 Manager. Công cụ tạo và quản lý mã vạch - HUYDT84</span><span className="footer-version">VERSION 1.0</span></div>
+        <div className="footer-inner"><div className="footer-brand"><Barcode size={19}/>HUYDT84 </div><span>© {new Date().getFullYear()} Code128 Manager. Công cụ tạo và quản lý mã vạch - HUYDT84@os</span><span className="footer-version">VERSION 1.0</span></div>
       </footer>
 
       {message && <div className={`toast ${message.type}`}><span>{message.type === 'success' ? <CheckCircle2 size={19}/> : <CircleAlert size={19}/>}</span>{message.text}<button onClick={() => setMessage(null)}><X size={16}/></button></div>}
